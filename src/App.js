@@ -4,32 +4,52 @@ import './App.css'
 import { withFormik, Form, Field } from 'formik'
 import Yup from 'yup'
 
-const App = ({ values, errors, touched }) => {
+const App = ({ values, errors, touched, isSubmitting }) => {
   console.log(touched)
   console.log(errors)
   return (
-    <Form>
-      <div>
-        <Field type="email" name="email" placeholder="Email" />
-        {touched.email &&
-          errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
+    <Form className="form">
+      <div className="input">
+        <Field
+          className="field"
+          type="email"
+          name="email"
+          placeholder="Email"
+        />
       </div>
-      <div>
-        <Field type="password" name="password" placeholder="password" />
-        {touched.password &&
-          errors.password && (
-            <div style={{ color: 'red' }}>{errors.password}</div>
-          )}
+      {touched.email &&
+        errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
+      <div className="input">
+        <Field
+          className="field"
+          type="password"
+          name="password"
+          placeholder="password"
+        />
       </div>
-      <label>
-        <Field type="checkbox" name="newsletter" checked={values.newsletter} />
-        Join our newsletter
-      </label>
-      <Field component="select" name="plan">
-        <option value="free">Free</option>
-        <option value="premium">Premium</option>
-      </Field>
-      <button>Submit</button>
+      {touched.password &&
+        errors.password && (
+          <div style={{ color: 'red' }}>{errors.password}</div>
+        )}
+      <div className="input">
+        <Field className="field select" component="select" name="plan">
+          <option value="free">Free</option>
+          <option value="premium">Premium</option>
+        </Field>
+      </div>
+
+      <div className="input">
+        <label className="input">
+          <Field
+            className="checkbox"
+            type="checkbox"
+            name="newsletter"
+            checked={values.newsletter}
+          />
+          Join our newsletter
+        </label>
+      </div>
+      <button disabled={isSubmitting}>Submit</button>
     </Form>
   )
 }
@@ -51,8 +71,15 @@ const FormikApp = withFormik({
       .min(9, 'Password must be 9 characters or longer')
       .required('password is required'),
   }),
-  handleSubmit(values) {
-    console.log(values)
+  handleSubmit(values, { setErrors, resetForm, setSubmitting }) {
+    setTimeout(() => {
+      if (values.email === 'wulin40063@gmail.com') {
+        setErrors({ email: 'The email has been taken!' })
+      } else {
+        resetForm()
+      }
+      setSubmitting(false)
+    }, 2000)
   },
 })(App)
 
