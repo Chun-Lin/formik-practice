@@ -1,29 +1,29 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import { withFormik } from 'formik'
+import { withFormik, Form, Field } from 'formik'
 import Yup from 'yup'
 
 const App = ({ values, handleChange, handleSubmit }) => {
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="email" name="email" placeholder="Email" value={values.email} onChange={handleChange}/>
-      <input type="password" name="password" placeholder="password" value={values.password} onChange={handleChange}/>
+    <Form onSubmit={handleSubmit}>
+      <Field type="email" name="email" placeholder="Email" />
+      <Field type="password" name="password" placeholder="password" />
       <button>Submit</button>
-    </form>
+    </Form>
   )
 }
 
 const FormikApp = withFormik({
-  mapPropsToValues({email, password}){
+  mapPropsToValues({ email, password }) {
     return {
       email: email || '',
-      password: password || ''
+      password: password || '',
     }
-  }, 
-  handleSubmit(values){
+  },
+  handleSubmit(values) {
     console.log(values)
-  }
+  },
 })(App)
 
 export default FormikApp
