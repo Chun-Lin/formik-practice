@@ -1,21 +1,29 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import { withFormik } from 'formik'
+import Yup from 'yup'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+const App = ({ values, handleChange, handleSubmit }) => {
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="email" name="email" placeholder="Email" value={values.email} onChange={handleChange}/>
+      <input type="password" name="password" placeholder="password" value={values.password} onChange={handleChange}/>
+      <button>Submit</button>
+    </form>
+  )
 }
 
-export default App;
+const FormikApp = withFormik({
+  mapPropsToValues({email, password}){
+    return {
+      email: email || '',
+      password: password || ''
+    }
+  }, 
+  handleSubmit(values){
+    console.log(values)
+  }
+})(App)
+
+export default FormikApp
